@@ -19,17 +19,17 @@
             </li>
 
             <li class="{{( request()->routeIs('service.index')) ? 'active' : '' }}">
-                <a href="{{ route('service.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Service</span></a>
+                <a href="{{ route('service.index') }}"><i class="fa fa-sitemap"></i> <span class="nav-label">Service</span></a>
             </li>
 
             <li class="{{( request()->routeIs('deliver.index')) ? 'active' : '' }}">
-                <a href="{{ route('deliver.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Pengiriman</span></a>
+                <a href="{{ route('deliver.index') }}"><i class="fa fa-truck"></i> <span class="nav-label">Pengiriman</span></a>
             </li>
 
             <li class="{{(
                 request()->routeIs('users.index') OR 
                 request()->routeIs('address.index')) ? 'active' : '' }}">
-                <a href="{{ route('users.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Pengguna</span></a>
+                <a href="{{ route('users.index') }}"><i class="fa fa-users"></i> <span class="nav-label">Pengguna</span></a>
             </li>
 
             <li class="special_link">

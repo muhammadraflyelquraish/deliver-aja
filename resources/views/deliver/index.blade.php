@@ -10,6 +10,46 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-2">
+                            <label for="">Nomor Resi</label>
+                            <input type="text" name="code_deliver" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Customer</label>
+                            <input type="text" name="customer_name" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Tanggal Dikirim</label>
+                            <input type="date" name="date_sent" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Tanggal Terima</label>
+                            <input type="date" name="date_received" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Status</label>
+                            <select name="status_deliver" id="status_deliver" class="form-control form-control-sm">
+                                <option value="" selected disabled>Pilih Status</option>
+                                <option value="Pickup">Pickup</option>
+                                <option value="Waiting">Waiting</option>
+                                <option value="Sent">Sent</option>
+                                <option value="Arrived">Arrived</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1" style="margin-top: 28px;">
+                            <button class="btn btn-sm btn-primary" id="btnFilter"><i class="fa fa-filter mr-1"></i>Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5><a class="btn btn-primary btn-sm" href="{{ route('deliver.create') }}"><i class="fa fa-plus-square mr-1"></i> Buat Pengiriman</a></h5>
@@ -49,6 +89,14 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('deliver.data') }}",
+                type: "GET",
+                data: function(d) {
+                    d.code_deliver = $('input[name="code_deliver"]').val()
+                    d.customer_name = $('input[name="customer_name"]').val()
+                    d.date_sent = $('input[name="date_sent"]').val()
+                    d.date_received = $('input[name="date_received"]').val()
+                    d.status_deliver = $('select[name="status_deliver"]').val()
+                }
             },
             columns: [{
                 data: 'DT_RowIndex',
@@ -86,6 +134,11 @@
                 "regex": true
             }
         });
+
+        $('#btnFilter').click(function(e) {
+            e.preventDefault()
+            serverSideTable.draw();
+        })
 
         function sweetalert(title, msg, type, timer = 60000, confirmButton = true) {
             swal({

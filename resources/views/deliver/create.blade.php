@@ -98,7 +98,7 @@
                             <div class="col-md-6">
                                 <label>Tanggal Jemput <span class="text-warning"> (isi jika layanan antar-jemput)</span></label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" id="date_pickup" name="date_pickup">
+                                    <input type="datetime-local" class="form-control" id="date_pickup" name="date_pickup">
                                     <div class="input-group-append">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
@@ -107,7 +107,7 @@
                             <div class="col-md-6">
                                 <label>Tanggal Kirim</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" id="date_sent" required name="date_sent">
+                                    <input type="datetime-local" class="form-control" id="date_sent" required name="date_sent">
                                     <div class="input-group-append">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>

@@ -20,21 +20,39 @@ class DeliverController extends Controller
     function data()
     {
         $query = Deliver::with(['user', 'service']);
+        $query->when(request('code_deliver'), function ($query) {
+            $query->where('code_deliver', '=', request('code_deliver'));
+        });
+        $query->when(request('customer_name'), function ($query) {
+            $query->whereHas('user', function ($q) {
+                $q->where('name', 'like', "%" . request('customer_name') . "%");
+            });
+        });
+        $query->when(request('date_sent'), function ($query) {
+            $query->whereDate('date_sent', '=', request('date_sent'));
+        });
+        $query->when(request('date_received'), function ($query) {
+            $query->whereDate('date_received', '=', request('date_received'));
+        });
+        $query->when(request('status_deliver'), function ($query) {
+            $query->where('status_deliver', request('status_deliver'));
+        });
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $button = '<div class="btn-group pull-right">';
                 $button .= '<a class="btn btn-sm btn-info" href="' . route('deliver.show', $row->id) . '"><i class="fa fa-eye"></i></a>';
-                // $button .= '<a class="btn btn-sm btn-warning" href="' . route('deliver.edit', $row->id) . '"><i class="fa fa-edit"></i></a>';
+                $button .= '<a class="btn btn-sm btn-warning" href="' . route('deliver.edit', $row->id) . '"><i class="fa fa-edit"></i></a>';
                 $button .= '<button class="btn btn-sm btn-danger" id="delete" data-integrity="' . $row->id . '"><i class="fa fa-trash"></i></button>';
                 $button .= '</div>';
                 return $button;
             })
             ->editColumn('date_sent', function ($row) {
-                return $row->date_sent ? date('Y-m-d', strtotime($row->date_sent)) : '-';
+                return $row->date_sent ? date('Y-m-d H:i:s', strtotime($row->date_sent)) : '-';
             })
             ->editColumn('date_received', function ($row) {
-                return $row->date_received ? date('Y-m-d', strtotime($row->date_received)) : '-';
+                return $row->date_received ? date('Y-m-d H:i:s', strtotime($row->date_received)) : '-';
             })
             ->editColumn('status_deliver', function ($row) {
                 if ($row->status_deliver == 'Pickup') {
@@ -116,6 +134,36 @@ class DeliverController extends Controller
             ->load('tracking');
 
         return view('deliver.detail', compact('deliver'));
+    }
+
+    function edit(Deliver $deliver)
+    {
+        $deliver = $deliver->load('user')
+            ->load('address')
+            ->load('service')
+            ->load('tracking');
+        $services = Service::get();
+
+        return view('deliver.edit', compact('deliver', 'services'));
+    }
+
+    function update(Deliver $deliver, Request $request)
+    {
+        $deliver->update([
+            'code_deliver' => $request->code_deliver,
+            'type_deliver' => $request->type_deliver,
+            'user_id' => $request->user_id,
+            'address_id' => $request->address_id,
+            'service_id' => $request->service_id,
+            'destination_address' => $request->destination_address,
+            'kilometer' => $request->kilometer,
+            'weight' => $request->weight,
+            'total_price' => $request->total_price,
+            'date_pickup' => $request->date_pickup,
+            'date_sent' => $request->date_sent,
+            'status_deliver' => $request->status_deliver,
+        ]);
+        return redirect()->route('deliver.index');
     }
 
     function destroy(Deliver $deliver)

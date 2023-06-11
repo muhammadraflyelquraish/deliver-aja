@@ -58,10 +58,10 @@
                             <tr>
                                 <th width="250px">Tanggal Jemput</th>
                                 <td width="50px" class="text-center">:</td>
-                                <td>{{ $deliver->date_pickup ? date('Y-m-d', strtotime($deliver->date_pickup)) : '-' }}</td>
+                                <td>{{ $deliver->date_pickup ? date('Y-m-d H:i:s', strtotime($deliver->date_pickup)) : '-' }}</td>
                                 <th width="250px">Tanggal Kirim</th>
                                 <td width="50px" class="text-center">:</td>
-                                <td>{{ $deliver->date_sent ? date('Y-m-d', strtotime($deliver->date_sent)) : '-' }}</td>
+                                <td>{{ $deliver->date_sent ? date('Y-m-d H:i:s', strtotime($deliver->date_sent)) : '-' }}</td>
                             </tr>
                             <tr>
                                 <th width="250px">Tanggal Diterima</th>
